@@ -1,9 +1,9 @@
 const { User } = require('../models/user.model');
-const crypto = require('crypto');
+const security = require('../../common/services/security.service');
 
 exports.insert = (req, res) => {
-    let salt = crypto.randomBytes(16).toString('base64');
-    let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest("base64");
+    let salt = security.getSalt();
+    let hash = security.getPasswordHash(salt, req.body.password);
     req.body.password = salt + "$" + hash;
     req.body.permissionLevel = 1;
 
@@ -36,8 +36,8 @@ exports.getById = (req, res) => {
 };
 exports.patchById = (req, res) => {
     if (req.body.password) {
-        let salt = crypto.randomBytes(16).toString('base64');
-        let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest("base64");
+        let salt = security.getSalt();
+        let hash = security.getPasswordHash(salt, req.body.password);
         req.body.password = salt + "$" + hash;
     }
 
