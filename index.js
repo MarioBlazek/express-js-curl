@@ -28,6 +28,10 @@ app.get("/", (req, res) => {
     res.json({message: 'Welcome to this API.'});
 });
 
+app.get("/express", (req, res) => {
+    res.redirect('https://expressjs.com/');
+});
+
 app.listen(config.port, function () {
     console.log('app listening at port %s', config.port);
 });

@@ -9,10 +9,9 @@ exports.login = (req, res) => {
         let hash = security.getPasswordHash(salt, refreshId);
         req.body.refreshKey = salt;
         let token = jwt.sign(req.body, jwtSecret);
-        let b = Buffer.from(hash);
-        let refresh_token = b.toString('base64');
+        let refreshToken = security.refreshToken(hash);
 
-        res.status(201).send({accessToken: token, refreshToken: refresh_token});
+        res.status(201).send({accessToken: token, refreshToken: refreshToken});
     } catch (err) {
         res.status(500).send({errors: err});
     }

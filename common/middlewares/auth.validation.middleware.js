@@ -3,7 +3,7 @@ const secret = require('../config/env.config.js').jwt_secret;
 const security = require('../services/security.service');
 
 exports.verifyRefreshBodyField = (req, res, next) => {
-    if (req.body && req.body.refresh_token) {
+    if (req.body && req.body.refreshToken) {
         return next();
     } else {
         return res.status(400).send({error: 'need to pass refresh_token field'});
@@ -11,10 +11,10 @@ exports.verifyRefreshBodyField = (req, res, next) => {
 };
 
 exports.validRefreshNeeded = (req, res, next) => {
-    let b = Buffer.from(req.body.refresh_token, 'base64');
-    let refresh_token = b.toString();
+    let refreshToken = security.refreshToken(req.body.refreshToken);
     let hash = security.getPasswordHash(req.jwt.refreshKey, req.jwt.userId + secret);
-    if (hash === refresh_token) {
+
+    if (hash === refreshToken) {
         req.body = req.jwt;
         return next();
     } else {

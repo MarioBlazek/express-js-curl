@@ -43,16 +43,14 @@ exports.patchById = (req, res) => {
 
     User.findByPk(req.params.userId)
         .then((user) => {
-            console.log(req.body);
             user.firstName = req.body.firstName;
             user.lastName = req.body.lastName;
             user.email = req.body.email;
             user.password = req.body.password;
 
             user.save().then((result) => {
-                res.status(204).send({});
+                res.status(200).send({});
             });
-
         });
 };
 

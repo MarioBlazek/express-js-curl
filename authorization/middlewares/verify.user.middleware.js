@@ -28,7 +28,10 @@ exports.isPasswordAndUserMatch = (req, res, next) => {
             email: req.body.email
         }
     }).then((user) => {
-        console.log(user);
+
+        if (user === null) {
+            return res.status(400).send({errors: ['Invalid e-mail or password']});
+        }
 
         let passwordFields = user.password.split('$');
         let salt = passwordFields[0];
@@ -47,6 +50,4 @@ exports.isPasswordAndUserMatch = (req, res, next) => {
         }
 
     });
-
-    // res.status(404).send({});
 };
